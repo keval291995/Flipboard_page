@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+    <title>Task</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<style>
+		body{
+			margin:0;
+		}
+		* {
+			font-family: 'Source Sans Pro', sans-serif;
+  			letter-spacing: 0.5px;
+		    -webkit-box-sizing: border-box;
+		    -moz-box-sizing: border-box;
+		    box-sizing: border-box;
+		}
+		.container{
+			position: relative;
+		    margin: 0 auto;
+		    -webkit-perspective: 2200px;
+		    -moz-perspective: 2200px;
+		    perspective: 2200px;
+    		overflow:hidden;
+    		background-color: rgb(247, 248, 249);
+		}
+		.pg{
+			position:absolute;
+			width:50%;
+			height:100%;
+			box-shadow: 9px 1px 8px 2px #00000026;
+			transform: rotateY(-0deg);
+    		transition: none 0s ease 0s;
+    		-webkit-transform-style: preserve-3d;
+		    -moz-transform-style: preserve-3d;
+		    -webkit-transform-origin: left center;
+		    -moz-transform-origin: left center;
+		    -webkit-touch-callout: none;
+		    -webkit-user-select: none;
+		    -khtml-user-select: none;
+		    -moz-user-select: none;
+		    -ms-user-select: none;
+		    user-select: none;
+		}
+		.front, .back{
+			display: block;
+		    height: 100%;
+		    width: 100%;
+		    position: absolute;
+		    background: #fff;
+		    -webkit-transform-style: preserve-3d;
+		    -moz-transform-style: preserve-3d;
+		    -webkit-backface-visibility: hidden;
+		    -moz-backface-visibility: hidden;
+		}
+		.back{
+			-webkit-transform: rotateY(-180deg);
+			-moz-transform: rotateY(-180deg);
+		}
+		.outer{
+			width: 100%;
+		    height: 100%;
+		    position: absolute;
+		    top: 0px;
+		    left: 0px;
+		    overflow: hidden;
+		    z-index: 999;
+		}
+		.first .front{
+			background-color:#f0f8ff;
+			border-left:8px solid #cae0c4;
+			border-top:8px solid #cae0c4;
+			border-bottom:8px solid #cae0c4;
+		}
+		.first .front .element, .last .back .element{
+			width:100% !important;
+			left:0px !important;
+		}
+		.last .back{
+			background-color:#f0f8ff;
+			border-right:8px solid #cae0c4;
+			border-top:8px solid #cae0c4;
+			border-bottom:8px solid #cae0c4;
+		}
+		.last .cover-img{
+			right:10px;
+		}
+		.last .auth{
+			text-align:right;
+		}
+		.element{
+			height: 100%;
+		    position: absolute;
+		    top: 0px;
+		    left:0px;
+		}
+		.start{
+			padding:50px 20px 20px;
+			height: 100%;
+		}
+		.cover-img{
+			position: absolute;
+    		top: calc(50% - 32px);
+		}
+		.part{
+			border-top: 1px solid #f2f2f2;
+		    float: left;
+		    padding: 20px;
+		    overflow: hidden;
+		    position: relative;
+		    background: #fff;
+		    cursor: pointer;
+		}
+		.dir{
+			position: absolute;
+    		z-index: 999;
+		}
+		.prev{
+		    position: fixed;
+		    width: 40px;
+    		height: 40px;
+    		text-align: center;
+			left: 10px;
+		    top: calc((100% / 2) - 20px);
+		    padding:10px;
+		    background-color: white;
+		    border-radius: 50%;
+		    box-shadow: 0px 0px 8px 1px #0000001c;
+		}
+		.next{
+		    position: fixed;
+		    width: 40px;
+    		height: 40px;
+    		text-align: center;
+			right: 10px;
+		    top: calc((100% / 2) - 20px);
+		    padding:10px;
+		    background-color: white;
+    		border-radius: 50%;
+    		box-shadow: 0px 0px 8px 1px #0000001c;
+		}
+		.c6{
+		    position: relative;
+			width: 50%;
+		    height: 100%;
+		    float: left;
+		    padding: 20px 10px;
+		    border-top: 1px solid #f2f2f2;
+		}
+		.title{
+			position: absolute;
+		    top: 0px;
+		    left: 0px;
+		    height: 50px;
+		    text-align: center;
+		    width: 100%;
+		}
+		.title h3{
+			line-height:50px;
+			margin:0;
+		}
+		.card{
+			width: 100%;
+		    height: 100%;
+		    box-shadow: 0px 0px 8px 2px #0000001c;
+		    padding:10px;
+		}
+		.card-head{
+			height: 60%;
+		    background-image: url(img/card1.jpg);
+		    width: 100%;
+		    background-repeat: no-repeat;
+		    background-position: center;
+		    background-size: cover;
+		}
+		.card-body{
+			width: 100%;
+			height:40%;
+			overflow:hidden;
+		}
+		.card-body p{
+			font-size: 20px;
+    		line-height: 30px;
+		}
+		.img1{
+			background-image:url("img/card1.jpg")
+		}
+		.img2{
+			background-image:url("img/card2.jpg")
+		}
+		.img3{
+			background-image:url("img/card3.jpg")
+		}
+		.img4{
+			background-image:url("img/card4.jpg")
+		}
+		@media and (min-width:768px) and (max-width:992px){
+			.s6{
+				width:50%;
+			}
+		}
+		@media (max-width:767px){
+			.x12{
+				width:100%;
+			}
+			.pg{
+				height:50%;
+				width:100%;
+				box-shadow:none;
+				-webkit-transform-origin: top center;
+		    	-moz-transform-origin: top center;
+			}
+			.first .front .element, .last .back .element{
+			    height: 100% !important;
+			    top: 0px !important;
+			}
+			.first .front{
+				border-left:8px solid #cae0c4;
+				border-top:8px solid #cae0c4;
+				border-right:8px solid #cae0c4;
+				border-bottom:none;
+			}
+			.last .back{
+				border-top:none;
+				border-right:8px solid #cae0c4;
+				border-left:8px solid #cae0c4;
+				border-bottom:8px solid #cae0c4;
+			}
+			.card-head{
+				height: 50%;
+			}
+			.card-body p{
+				font-size:14px;
+				line-height:20px;
+			}
+			.back{
+				-webkit-transform: rotateX(-180deg);
+				-moz-transform: rotateX(-180deg);
+			}
+			.xs-dispnone{
+				display:none;
+			}
+		}
+	</style>		
+</head>
+<body>
+	
+	<div id="flip" class="container">
+		<div class="dir">
+			<div class="prev"> <i class="fa fa fa-angle-double-left" aria-hidden="true"></i> </div>
+			<div class="next"> <i class="fa fa fa-angle-double-right" aria-hidden="true"></i> </div>
+		</div>
+		<div class="pg first">
+			<div class="front">
+				<div class="outer">
+					<div class="element">
+						<div class="start">
+							<div class="cover-img">
+								<img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png">
+							</div>
+							<div class="auth">
+								<p>By Keval</p>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="back">
+				<div class="outer">
+					<div class="element">
+						<div class="start">
+							<div class="title">
+								<h3>Feeds</h3>
+							</div>
+							<div class="c6 s6 x12">
+								<div class="card">
+									<div class="card-head img1"></div>	
+									<div class="card-body">
+										<h2>Moon Light</h2>
+										<p title="A dreamer is one who can only find his way by moonlight, and his punishment is that he sees the dawn before the rest of the world. Music is moonlight in the gloomy night of life.">A dreamer is one who can only find his way by moonlight, and his punishment is that he sees the dawn before the rest of the world. Music is moonlight in the gloomy night of life. </p>
+									</div>
+								</div>
+							</div>
+							<div class="c6 s6 xs-dispnone">
+								<div class="card">
+									<div class="card-head img2"></div>	
+									<div class="card-body">
+										<h2>Agriculture</h2>
+										<p title="Agriculture is our wisest pursuit, because it will in the end contribute most to real wealth, good morals, and happiness.” “I believe in the future of agriculture, with a faith born not of words but of deeds">Agriculture is our wisest pursuit, because it will in the end contribute most to real wealth, good morals, and happiness.” “I believe in the future of agriculture, with a faith born not of words but of deeds</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="pg">
+			<div class="front">
+				<div class="outer">
+					<div class="element">
+						<div class="start">
+							<div class="title">
+								<h3>Feeds</h3>
+							</div>
+							<div class="c6 s6 x12">
+								<div class="card">
+									<div class="card-head img1"></div>	
+									<div class="card-body">
+										<h2>Moon Light</h2>
+										<p title="A dreamer is one who can only find his way by moonlight, and his punishment is that he sees the dawn before the rest of the world. Music is moonlight in the gloomy night of life.">A dreamer is one who can only find his way by moonlight, and his punishment is that he sees the dawn before the rest of the world. Music is moonlight in the gloomy night of life. </p>
+									</div>
+								</div>
+							</div>
+							<div class="c6 s6 xs-dispnone">
+								<div class="card">
+									<div class="card-head img2"></div>	
+									<div class="card-body">
+										<h2>Agriculture</h2>
+										<p title="Agriculture is our wisest pursuit, because it will in the end contribute most to real wealth, good morals, and happiness.” “I believe in the future of agriculture, with a faith born not of words but of deeds">Agriculture is our wisest pursuit, because it will in the end contribute most to real wealth, good morals, and happiness.” “I believe in the future of agriculture, with a faith born not of words but of deeds</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="back">
+				<div class="outer">
+					<div class="element">
+						<div class="start">
+							<div class="title">
+								<h3>Feeds</h3>
+							</div>
+							<div class="c6 s6 x12">
+								<div class="card">
+									<div class="card-head img3"></div>	
+									<div class="card-body">
+										<h2>Mountain</h2>
+										<p title="Over every mountain there is a path, although it may not be seen from the valley. Somewhere between the bottom of the climb and the summit is the answer to the mystery why we climb.">Over every mountain there is a path, although it may not be seen from the valley. Somewhere between the bottom of the climb and the summit is the answer to the mystery why we climb.</p>
+									</div>
+								</div>
+							</div>
+							<div class="c6 s6 xs-dispnone">
+								<div class="card">
+									<div class="card-head img4"></div>	
+									<div class="card-body">
+										<h2>Forest</h2>
+										<p title="The clearest way into the Universe is through a forest wilderness. I walk slowly into myself, through a forest of empty suits of armor.">The clearest way into the Universe is through a forest wilderness. I walk slowly into myself, through a forest of empty suits of armor.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="pg last">
+			<div class="front">
+				<div class="outer">
+					<div class="element">
+						<div class="start">
+							<div class="title">
+								<h3>Feeds</h3>
+							</div>
+							<div class="c6 s6 x12">
+								<div class="card">
+									<div class="card-head img3"></div>	
+									<div class="card-body">
+										<h2>Mountain</h2>
+										<p title="Over every mountain there is a path, although it may not be seen from the valley. Somewhere between the bottom of the climb and the summit is the answer to the mystery why we climb.">Over every mountain there is a path, although it may not be seen from the valley. Somewhere between the bottom of the climb and the summit is the answer to the mystery why we climb.</p>
+									</div>
+								</div>
+							</div>
+							<div class="c6 s6 xs-dispnone">
+								<div class="card">
+									<div class="card-head img4"></div>	
+									<div class="card-body">
+										<h2>Forest</h2>
+										<p title="The clearest way into the Universe is through a forest wilderness. I walk slowly into myself, through a forest of empty suits of armor.">The clearest way into the Universe is through a forest wilderness. I walk slowly into myself, through a forest of empty suits of armor.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="back">
+				<div class="outer">
+					<div class="element">
+						<div class="start">
+							<div class="cover-img">
+								<img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png">
+							</div>
+							<div class="auth">
+								<p>By Keval</p>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> 
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script>
+		var r,
+			s = 0,
+			t = -180,
+			ppg = -1,
+			npg = 0,
+			opcty = 0.01,
+			a = [],
+			pg_length = $(".pg").length - 1;
+		var win = $(window);
+		var windowProp = {
+			width	: win.width(),
+			height	: win.height(),
+			hwidth  : win.width()/2,
+			hheight  : win.height()/2
+		};
+		$(document).ready(function(){
+			if(windowProp.width<=767){
+				var zndx = pg_length;
+				$("#flip").css({"width":windowProp.width+"px","height":windowProp.height+"px"});
+				$(".element").css("height",windowProp.height+"px");
+				$(".front .element").css("top","-"+windowProp.hheight+"px");
+				$(".pg").each(function() {
+					$(this).css({"top":windowProp.hheight+"px","z-index":zndx});
+					a.push(zndx);
+					zndx = zndx - 1;
+				});
+				console.log(a);
+			}else{
+				var zndx = pg_length;
+				$("#flip").css({"width":windowProp.width+"px","height":windowProp.height+"px"});
+				$(".element").css("width",windowProp.width+"px");
+				$(".front .element").css("left","-"+windowProp.hwidth+"px");
+				$(".pg").each(function() {
+					$(this).css({"left":windowProp.hwidth+"px","z-index":zndx});
+					a.push(zndx);
+					zndx = zndx - 1;
+				});
+				console.log(a);
+			}
+		})
+		$(window).resize(function(){
+			var win = $(window);
+			windowProp = {
+				width	: win.width(),
+				height	: win.height(),
+				hwidth  : win.width()/2,
+				hheight  : win.height()/2
+			};
+			if(windowProp.width<=767){
+				$("#flip").css({"width":windowProp.width+"px","height":windowProp.height+"px"});
+				$(".element").css("width","100%");
+				$(".front .element").css("left","0px");
+				$(".pg").css("left","0px");
+				$(".element").css("height",windowProp.height+"px");
+				$(".front .element").css("top","-"+windowProp.hheight+"px");
+				$(".pg").css("top",windowProp.hheight+"px");
+			}else{
+				$("#flip").css({"width":windowProp.width+"px","height":windowProp.height+"px"});
+				$(".element").css("height","100%");
+				$(".front .element").css("top","0px");
+				$(".pg").css("top","0px");
+				$(".element").css("width",windowProp.width+"px");
+				$(".front .element").css("left","-"+windowProp.hwidth+"px");
+				$(".pg").css("left",windowProp.hwidth+"px");
+			}
+		})
+		$( ".next" ).click(function() {
+			if(windowProp.width <= 767){
+				if(npg <= pg_length){
+					th = $(".pg")[npg];
+					var s1 = 0;
+				  	clearInterval(r);
+					r = setInterval(function(){
+						if(s1 >= 180){
+							s1=0;
+							clearInterval(r);
+							npg = npg + 1;
+							ppg = ppg + 1;
+							var th1 = $(".pg")[npg];
+							var z = th.style.zIndex;
+							z = Number(z) + 1;
+							$(th1).css("z-index",z);
+						}else{
+							s1 = s1+1;
+							$(th).css('transform','rotateX('+s1+'deg)');
+						}
+					},"10");
+				}else {
+					console.log("stop");
+				}
+			}else{
+				if(npg <= pg_length){
+					th = $(".pg")[npg];
+					$(th).css("box-shadow","7px 0px 8px 2px rgba(0, 0, 0, 0.15)");
+				  	clearInterval(r);
+					r = setInterval(function(){
+						if(s <= -180){
+							s=0;
+							clearInterval(r);
+							npg = npg + 1;
+							ppg = ppg + 1;
+							var th1 = $(".pg")[npg];
+							var z = th.style.zIndex;
+							z = Number(z) + 1;
+							//console.log(z);
+							$(th1).css("z-index",z);
+							$(th).css("box-shadow","9px 1px 8px 2px #00000026");
+						}else{
+							s = s-1;
+							$(th).css('transform','rotateY('+s+'deg)');
+						}
+					},"10");
+				}else {
+					console.log("stop");
+				}
+			}
+		});
+		$( ".prev" ).click(function() {
+			if(windowProp.width <= 767){
+				console.log(ppg);
+				if(ppg > -1){
+					th = $(".pg")[ppg];
+					var th1 = $(".pg")[npg];
+					var z = a[npg];
+					$(th1).css("z-index",z);
+					var t1 = 180;
+				  	clearInterval(r);
+					r = setInterval(function(){
+						if(t1 <= 0){
+							t1=180;
+							clearInterval(r);
+							npg = npg - 1;
+							ppg = ppg - 1;
+						}else{
+							t1 = t1-1;
+							$(th).css('transform','rotateX('+t1+'deg)');
+						}
+					},"10");
+				} else {
+					ppg = -1;
+				}
+			}else{
+				if(ppg > -1){
+					th = $(".pg")[ppg];
+					var th1 = $(".pg")[npg];
+					var z = a[npg];
+					$(th1).css("z-index",z);
+					$(th).css("box-shadow","7px 0px 8px 2px rgba(0, 0, 0, 0.15)");
+				  	clearInterval(r);
+					r = setInterval(function(){
+						if(t >= 0){
+							t=-180;
+							clearInterval(r);
+							npg = npg - 1;
+							ppg = ppg - 1;
+							$(th1).css("box-shadow","9px 1px 8px 2px #00000026");
+						}else{
+							t = t+1;
+							$(th).css('transform','rotateY('+t+'deg)');
+						}
+					},"10");
+				} else {
+					ppg = -1;
+				}
+			}
+		});
+	</script>
+</body>
+</html>
